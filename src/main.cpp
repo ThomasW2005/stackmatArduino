@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include "CapacitiveSensor.h"
 
+#define HOLDTIME 2000
+#define TOUCHVALUE 1000
+#define isHeld (mat.capacitiveSensor(30) > TOUCHVALUE)
+
 CapacitiveSensor mat = CapacitiveSensor(4, 2);
 long readyTimer;
 long mainTimer;
 bool lock = false;
-
-#define isHeld (mat.capacitiveSensor(30) > 1000)
 
 void setup()
 {
@@ -21,7 +23,7 @@ void loop()
     readyTimer = millis();
     while (isHeld)
     {
-      if (readyTimer + 2000 < millis())
+      if (readyTimer + HOLDTIME < millis())
       {
         if (lock == false)
         {
